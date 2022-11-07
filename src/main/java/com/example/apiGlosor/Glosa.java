@@ -19,7 +19,7 @@ import javax.persistence.*;
 public class Glosa {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //ändrade från AUTO
+    @GeneratedValue(strategy = GenerationType.AUTO) //ändrat mellan IDENTITY och AUTO
     private Integer id;
     private String eng;
     private String swe;
