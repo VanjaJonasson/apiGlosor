@@ -1,6 +1,6 @@
-package com.example.apiGlosor.Repositories;
+package com.example.apiGlosor.repositories;
 
-import com.example.apiGlosor.Entities.Category;
+import com.example.apiGlosor.entities.Category;
 import org.springframework.data.repository.CrudRepository;
 
 public interface CategoryRepository extends CrudRepository<Category, Integer> {

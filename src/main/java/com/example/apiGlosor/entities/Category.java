@@ -1,7 +1,6 @@
-package com.example.apiGlosor.Entities;
+package com.example.apiGlosor.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.ArrayList;

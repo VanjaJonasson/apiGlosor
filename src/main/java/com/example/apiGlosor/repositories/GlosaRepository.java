@@ -1,6 +1,6 @@
-package com.example.apiGlosor.Repositories;
+package com.example.apiGlosor.repositories;
 
-import com.example.apiGlosor.Entities.Glosa;
+import com.example.apiGlosor.entities.Glosa;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 

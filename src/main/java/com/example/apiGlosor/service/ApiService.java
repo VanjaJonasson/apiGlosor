@@ -1,9 +1,9 @@
-package com.example.apiGlosor.Service;
+package com.example.apiGlosor.service;
 
-import com.example.apiGlosor.Entities.Category;
-import com.example.apiGlosor.Entities.Glosa;
-import com.example.apiGlosor.Repositories.CategoryRepository;
-import com.example.apiGlosor.Repositories.GlosaRepository;
+import com.example.apiGlosor.entities.Category;
+import com.example.apiGlosor.entities.Glosa;
+import com.example.apiGlosor.repositories.CategoryRepository;
+import com.example.apiGlosor.repositories.GlosaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,8 +1,8 @@
-package com.example.apiGlosor.Controller;
+package com.example.apiGlosor.controller;
 
-import com.example.apiGlosor.Entities.Category;
-import com.example.apiGlosor.Entities.Glosa;
-import com.example.apiGlosor.Service.ApiService;
+import com.example.apiGlosor.entities.Category;
+import com.example.apiGlosor.entities.Glosa;
+import com.example.apiGlosor.service.ApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;

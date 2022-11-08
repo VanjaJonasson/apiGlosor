@@ -1,7 +1,4 @@
-package com.example.apiGlosor.Entities;
-
-import com.example.apiGlosor.Entities.Category;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+package com.example.apiGlosor.entities;
 
 import javax.persistence.*;
 
