@@ -1,10 +1,8 @@
-package com.example.apiGlosor;
+package com.example.apiGlosor.Repositories;
 
+import com.example.apiGlosor.Entities.Glosa;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
-
-import java.util.List;
 
 public interface GlosaRepository extends CrudRepository<Glosa, Integer> {
 

@@ -1,10 +1,7 @@
-package com.example.apiGlosor;
+package com.example.apiGlosor.Entities;
 
+import com.example.apiGlosor.Entities.Category;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
 
@@ -14,19 +11,17 @@ import javax.persistence.*;
 /*@JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id")
-
  */
-public class Glosa {
-
+public class Glosa { //Swedish word "glosa" is a word in a glossary
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) //ändrat mellan IDENTITY och AUTO
+    @GeneratedValue(strategy = GenerationType.AUTO) //changed b/w IDENTITY and AUTO.
     private Integer id;
     private String eng;
     private String swe;
 
-    //@JsonBackReference //nåt hände när denna kommenterades bort
+    //@JsonBackReference //categories not showing in json at http://localhost:8081/glosor when commented out
     @ManyToOne
-    @JoinColumn(name="category_id", nullable=false) //det verkar funka utan denna rad
+    @JoinColumn(name="category_id", nullable=false) ////it seems to work without this line as well
     private Category category;
 
     public Glosa() {
