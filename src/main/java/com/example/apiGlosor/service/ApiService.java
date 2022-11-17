@@ -7,6 +7,7 @@ import com.example.apiGlosor.repositories.GlosaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -51,7 +52,9 @@ public class ApiService {
         return glosaRepository.save(glosa);
     }
 
+
     public void delete(int id) {
+        //glosaRepository.deleteById(id); should also work
         glosaRepository.delete(glosaRepository.findById(id).get());
     };
 }
