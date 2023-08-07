@@ -1,6 +1,9 @@
 package com.example.apiGlosor.entities;
 
-import javax.persistence.*;
+//import javax.persistence.*;
+//when upgrading to springboot 3.0.0 changed from javax to jakarta
+//https://stackoverflow.com/questions/73350585/upgrade-from-spring-boot-2-7-2-to-spring-boot-3-0-0-snapshot-java-package-java
+import jakarta.persistence.*;
 
 
 // This tells Hibernate to make a table out of this class
