@@ -50,7 +50,7 @@ public class ApiService {
     }
 
     public Glosa save(Glosa glosa, int cat) {
-        //check if glosa with id exist to prevent update on save
+        //check if glosa with id exist to prevent update on save if id is sent in request body
         if(glosa.getId() != null && glosaRepository.existsById(glosa.getId())){
             throw new GlosaAlreadyExistsException(glosa.getId());
         }
@@ -61,23 +61,18 @@ public class ApiService {
     public ResponseEntity update(Glosa glosa, int cat, int id) {
         Optional<Glosa> glosaOptional = glosaRepository.findById(id);
 
+        System.out.println("empty: " + glosaOptional.isEmpty());
+
         if (glosaOptional.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        } else {
-            //glosa.setId(id); //needed if id is not sent in response body not using form in "consumingApiGlosor" in previous solutions
+            throw new GlosaNotFoundException(id);
+        }
             glosaRepository.findById(id).map(g -> {
                 g.setCategory(categoryRepository.findById(cat).orElseThrow(() -> new GlosaNotFoundException(cat)));
                 g.setEng(glosa.getEng());
                 g.setSwe(glosa.getSwe());
-                glosaRepository.save(g);
-
-                return ResponseEntity.noContent().build();
+                return glosaRepository.save(g);
             });
-
-            System.out.println("@PutMapping(\"/glosa/{cat}/{id}\") is being used");
-
-
-        }return ResponseEntity.noContent().build();
+        return ResponseEntity.noContent().build();
     }
 
 

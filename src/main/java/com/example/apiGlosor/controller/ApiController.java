@@ -27,14 +27,14 @@ public class ApiController {
     //without categories depending on @JsonBackReference and @JsonManagedReference annotations in Entity classes.
     @GetMapping("/glosor")
     public List<Glosa> glosor() {
-        return (List<Glosa>) glosaRepository.findAll();
+        return glosaRepository.findAll();
     }
 
     //returns all categories
     //incl. list of glossary in each category depending on @JsonBackReference and @JsonManagedReference annotations in Entity classes.
     @GetMapping("/categories")
     public List<Category> categories() {
-        return (List<Category>) categoryRepository.findAll();
+        return categoryRepository.findAll();
     }
 
     //returns a random "glosa" in a specific category
@@ -61,13 +61,6 @@ public class ApiController {
         return apiService.save(glosa, cat);
     }
 
-    //doesn´t check if glosa exists and creates a new record if it doesn´t
-    //used with form template in consumingApiGlosor
-    @PutMapping("/glosa/{cat}")
-    public Glosa put(@RequestBody Glosa glosa, @PathVariable int cat) {
-        System.out.println("@PutMapping(\"/glosa/{cat}\") is being used");
-        return apiService.save(glosa, cat);
-    }
 
     //use this put in order not to create a resource that doesn´t exist
     //https://www.springboottutorial.com/spring-boot-crud-rest-service-with-jpa-hibernate
