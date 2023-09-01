@@ -57,7 +57,7 @@ public class ApiController {
     }
 
     @PostMapping("/glosa/{cat}")
-    public Glosa post(@RequestBody Glosa glosa, @PathVariable int cat) {  //category does not need to be sent in request body
+    public ResponseEntity post(@RequestBody Glosa glosa, @PathVariable int cat) {  //category does not need to be sent in request body
         return apiService.save(glosa, cat);
     }
 

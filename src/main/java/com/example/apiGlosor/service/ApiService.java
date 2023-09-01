@@ -9,7 +9,9 @@ import com.example.apiGlosor.repositories.GlosaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -49,13 +51,18 @@ public class ApiService {
         return categoryRepository.findById(id).orElseThrow(() -> new GlosaNotFoundException(id));
     }
 
-    public Glosa save(Glosa glosa, int cat) {
+    public ResponseEntity save(Glosa glosa, int cat) {
         //check if glosa with id exist to prevent update on save if id is sent in request body
         if(glosa.getId() != null && glosaRepository.existsById(glosa.getId())){
             throw new GlosaAlreadyExistsException(glosa.getId());
         }
         glosa.setCategory(categoryRepository.findById(cat).orElseThrow(() -> new GlosaNotFoundException(cat)));
-        return glosaRepository.save(glosa);
+        Glosa savedGlosa = glosaRepository.save(glosa);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(savedGlosa.getId()).toUri();
+        return ResponseEntity.created(location).build();
     }
 
     public ResponseEntity update(Glosa glosa, int cat, int id) {
@@ -66,13 +73,18 @@ public class ApiService {
         if (glosaOptional.isEmpty()) {
             throw new GlosaNotFoundException(id);
         }
-            glosaRepository.findById(id).map(g -> {
+            Optional<Glosa> updatedGlosa = glosaRepository.findById(id).map(g -> {
                 g.setCategory(categoryRepository.findById(cat).orElseThrow(() -> new GlosaNotFoundException(cat)));
                 g.setEng(glosa.getEng());
                 g.setSwe(glosa.getSwe());
                 return glosaRepository.save(g);
             });
-        return ResponseEntity.noContent().build();
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(glosaRepository.findById(id)).toUri();
+        return ResponseEntity.created(location).build();
     }
 
 
