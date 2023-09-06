@@ -49,11 +49,10 @@ public class ApiController {
         return apiService.findGlosaById(id);
     }
 
-    //returns a category
-    //with all "glosor" in that category as an array attribute depending on @JsonBackReference and @JsonManagedReference annotations in Entity classes.
+    //returns all glosor in a specific category
     @GetMapping("/category/{id}")
-    public Category category(@PathVariable int id) {
-        return apiService.findCategoryById(id);
+    public List<Glosa> category(@PathVariable int id) {
+        return categoryRepository.findGlosorWithCat(id);
     }
 
     @PostMapping("/glosa/{cat}")

@@ -2,6 +2,7 @@ package com.example.apiGlosor;
 
 import com.example.apiGlosor.entities.Category;
 import com.example.apiGlosor.entities.Glosa;
+import com.example.apiGlosor.repositories.CategoryRepository;
 import com.example.apiGlosor.repositories.GlosaRepository;
 import com.example.apiGlosor.service.ApiService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -40,6 +41,9 @@ class ApiGlosorApplicationTests {
 	@Autowired
 	GlosaRepository glosaRepository;
 
+	@Autowired
+	CategoryRepository categoryRepository;
+
 	//The MockMvc object can be used to perform HTTP requests to test the Controller methods
 	//The response can then be inspected, for example to assert that it contains expected values
 	@Autowired
@@ -56,8 +60,8 @@ class ApiGlosorApplicationTests {
 
 	@Test
 	void getGlosa() throws Exception {
-		Glosa glosa = service.findGlosaById(5);
-		assertEquals("four", glosa.getEng());
+		Glosa glosa = service.findGlosaById(15);
+		assertEquals("thursday", glosa.getEng());
 	}
 
 	@Test
@@ -70,11 +74,19 @@ class ApiGlosorApplicationTests {
 
 	@Test
 	@Transactional
-	void save(){
-		glosaRepository.deleteById(13);
-		Optional<Glosa> glosa = glosaRepository.findById(13);
-		assertTrue(glosa.isEmpty());
+	void save() throws Exception {
+		Glosa glosa = new Glosa(null, "dream", "dröm");
+		service.save(glosa, 2);
+		Optional<Glosa> savedGlosa = glosaRepository.findById(glosa.getId());
+		String eng = savedGlosa.get().getEng();
+		assertEquals("dream", eng);
+		mvc.perform(
+						MockMvcRequestBuilders.get("/glosor")
+				)
+				.andExpect(status().is2xxSuccessful())
+				.andExpect(MockMvcResultMatchers.content().string(containsString("dream")));
 	}
+
 
 	@Test
 	@Transactional
@@ -102,13 +114,13 @@ class ApiGlosorApplicationTests {
 						MockMvcRequestBuilders.get("/glosor")
 				)
 				.andExpect(status().is2xxSuccessful())
-				.andExpect(MockMvcResultMatchers.content().string(containsString("fönster")));
+				.andExpect(MockMvcResultMatchers.content().string(containsString("hejsan")));
 	}
 
 	//using .accept(MediaType.APPLICATION_JSON_UTF8) instead of specifying produces in Controller as with glosor
 	//for result of UTF-8 with åäö
 	@Test
-	void getCategoriesWithHttpReequest() throws Exception {
+	void getCategoriesWithHttpRequest() throws Exception {
 		mvc.perform(MockMvcRequestBuilders.get("/categories").accept(MediaType.APPLICATION_JSON_UTF8))
 				.andExpect(status().isOk())
 				.andExpect(MockMvcResultMatchers.content().string(containsString("lätt")))
@@ -117,26 +129,26 @@ class ApiGlosorApplicationTests {
 	}
 
 	@Test
-	void getGlosaByIdWithHttpReequest() throws Exception {
-		mvc.perform(MockMvcRequestBuilders.get("/glosa/12").accept(MediaType.APPLICATION_JSON_UTF8))
+	void getGlosaByIdWithHttpRequest() throws Exception {
+		mvc.perform(MockMvcRequestBuilders.get("/glosa/15").accept(MediaType.APPLICATION_JSON_UTF8))
 				.andExpect(status().isOk())
-				.andExpect(MockMvcResultMatchers.content().string(containsString("window")))
-				.andExpect(MockMvcResultMatchers.content().string(containsString("fönster")))
+				.andExpect(MockMvcResultMatchers.content().string(containsString("thursday")))
+				.andExpect(MockMvcResultMatchers.content().string(containsString("torsdag")))
 				.andExpect(MockMvcResultMatchers.content().string(containsString("svår")))
 				.andExpect(MockMvcResultMatchers.content().string(not(containsString("lätt"))));
 	}
 
 	@Test
 	@Transactional
-	void postGlosaWithHttpReequest() throws Exception {
+	void postGlosaWithHttpRequest() throws Exception {
 		mvc.perform(
 						MockMvcRequestBuilders.get("/glosor")
 				)
 				.andExpect(status().is2xxSuccessful())
-				.andExpect(MockMvcResultMatchers.content().string(not(containsString("hejsan"))));
+				.andExpect(MockMvcResultMatchers.content().string(not(containsString("dream"))));
 
-		mvc.perform( MockMvcRequestBuilders.post("/glosa/{cat}, 2")
-						.content(mapper.writeValueAsString(new Glosa(null, "hejsan", "hejsan")))
+		mvc.perform( MockMvcRequestBuilders.post("/glosa/{cat}", 2)
+						.content(mapper.writeValueAsString(new Glosa(null, "dream", "dröm")))
 						.contentType(MediaType.APPLICATION_JSON_UTF8)
 				)
 				.andExpect(status().is2xxSuccessful());
@@ -145,7 +157,7 @@ class ApiGlosorApplicationTests {
 						MockMvcRequestBuilders.get("/glosor")
 				)
 				.andExpect(status().is2xxSuccessful())
-				.andExpect(MockMvcResultMatchers.content().string(containsString("hejsan")));
+				.andExpect(MockMvcResultMatchers.content().string(containsString("dream")));
 	}
 
 	//when to use dirtiesContext?
