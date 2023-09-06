@@ -59,8 +59,8 @@ public class ApiService {
         glosa.setCategory(categoryRepository.findById(cat).orElseThrow(() -> new GlosaNotFoundException(cat)));
         Glosa savedGlosa = glosaRepository.save(glosa);
         URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
+                .fromCurrentContextPath()
+                .path("/glosa/" + savedGlosa.getId())
                 .buildAndExpand(savedGlosa.getId()).toUri();
         return ResponseEntity.created(location).build();
     }
@@ -73,16 +73,18 @@ public class ApiService {
         if (glosaOptional.isEmpty()) {
             throw new GlosaNotFoundException(id);
         }
-            Optional<Glosa> updatedGlosa = glosaRepository.findById(id).map(g -> {
-                g.setCategory(categoryRepository.findById(cat).orElseThrow(() -> new GlosaNotFoundException(cat)));
-                g.setEng(glosa.getEng());
-                g.setSwe(glosa.getSwe());
-                return glosaRepository.save(g);
-            });
+
+        Optional<Glosa> updatedGlosa = glosaRepository.findById(id).map(g -> {
+            g.setCategory(categoryRepository.findById(cat).orElseThrow(() -> new GlosaNotFoundException(cat)));
+            g.setEng(glosa.getEng());
+            g.setSwe(glosa.getSwe());
+            return glosaRepository.save(g);
+        });
+
 
         URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
+                .fromCurrentContextPath()
+                .path("/glosa/" + id)
                 .buildAndExpand(glosaRepository.findById(id)).toUri();
         return ResponseEntity.created(location).build();
     }

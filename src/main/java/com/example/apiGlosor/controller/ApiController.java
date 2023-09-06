@@ -25,7 +25,7 @@ public class ApiController {
 
     //list of glossary
     //without categories depending on @JsonBackReference and @JsonManagedReference annotations in Entity classes.
-    @GetMapping("/glosor")
+    @GetMapping(value = "/glosor", produces={"application/json; charset=UTF-8"})
     public List<Glosa> glosor() {
         return glosaRepository.findAll();
     }
@@ -66,6 +66,7 @@ public class ApiController {
     //https://www.springboottutorial.com/spring-boot-crud-rest-service-with-jpa-hibernate
     @PutMapping("/glosa/{cat}/{id}")
     public ResponseEntity updateGlosa(@RequestBody Glosa glosa, @PathVariable int cat, @PathVariable int id) {
+        System.out.println(glosa.getEng());
         return apiService.update(glosa, cat, id);
     }
 

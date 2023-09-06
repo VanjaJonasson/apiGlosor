@@ -25,6 +25,7 @@ public class Category {
     //@JsonManagedReference
     @OneToMany(mappedBy = "category", cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     //changed to be able to update category. found this article helpful: https://stackoverflow.com/questions/49592081/jpa-detached-entity-passed-to-persist-nested-exception-is-org-hibernate-persis
+    //to make Glosa the owning side of the relationship mappedBy is added on Category
     //changed from CascadeType.all
     //added fetch = FetchType.LAZY
     @JsonIgnore
