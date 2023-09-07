@@ -58,6 +58,8 @@ public class ApiService {
         }
         glosa.setCategory(categoryRepository.findById(cat).orElseThrow(() -> new GlosaNotFoundException(cat)));
         Glosa savedGlosa = glosaRepository.save(glosa);
+        //result: Hibernate: insert into glosa (category_id, eng, swe, id) values (?, ?, ?, ?)
+
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
                 .path("/glosa/" + savedGlosa.getId())
@@ -68,24 +70,30 @@ public class ApiService {
     public ResponseEntity update(Glosa glosa, int cat, int id) {
         Optional<Glosa> glosaOptional = glosaRepository.findById(id);
 
-        System.out.println("empty: " + glosaOptional.isEmpty());
+        System.out.println("is empty?: " + glosaOptional.isEmpty());
 
         if (glosaOptional.isEmpty()) {
             throw new GlosaNotFoundException(id);
         }
 
-        Optional<Glosa> updatedGlosa = glosaRepository.findById(id).map(g -> {
+        glosa.setId(id);
+        glosa.setCategory(categoryRepository.findById(cat).orElseThrow(() -> new GlosaNotFoundException(cat)));
+        glosaRepository.save(glosa);
+        //result: Hibernate: update glosa set category_id=?, eng=?, swe=? where id=?
+
+        //alternative that also works
+        /*Optional<Glosa> updatedGlosa = glosaRepository.findById(id).map(g -> {
             g.setCategory(categoryRepository.findById(cat).orElseThrow(() -> new GlosaNotFoundException(cat)));
             g.setEng(glosa.getEng());
             g.setSwe(glosa.getSwe());
             return glosaRepository.save(g);
-        });
+        });*/
 
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
                 .path("/glosa/" + id)
-                .buildAndExpand(glosaRepository.findById(id)).toUri();
+                .buildAndExpand(id).toUri();
         return ResponseEntity.created(location).build();
     }
 

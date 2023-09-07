@@ -69,6 +69,15 @@ public class ApiController {
         return apiService.update(glosa, cat, id);
     }
 
+    //Can be used if it is known that id is sent via form in template view
+    @PutMapping("/glosa/{cat}")
+    public Glosa updateGlosaUsingForm(@RequestBody Glosa glosa, @PathVariable int cat) {
+        System.out.println(glosa.getId());
+        glosa.setCategory(categoryRepository.findById(cat).get());
+        return glosaRepository.save(glosa);
+        //result: Hibernate: update glosa set category_id=?, eng=?, swe=? where id=?
+    }
+
     @DeleteMapping("/glosa/{id}")
     public ResponseEntity delete(@PathVariable int id) {
         glosaRepository.deleteById(id);
